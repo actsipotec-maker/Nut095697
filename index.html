@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Home IoT Panel</title>
     
-    <!-- นำเข้า FontAwesome สำหรับใช้ไอคอนต่างๆ -->
+    <!-- นำเข้า FontAwesome สำหรับใช้ไอคอน -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- CSS สำหรับตกแต่ง UI --- */
+        /* --- CSS สำหรับตกแต่ง UI พื้นฐาน --- */
         body {
-            background-color: #0f1015; /* สีพื้นหลังโทนเข้ม */
+            background-color: #0f1015;
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
@@ -119,27 +119,20 @@
             transform: translateX(26px);
         }
 
-        /* --- CSS สำหรับเครดิตผู้พัฒนา (เพิ่มใหม่) --- */
+        /* --- CSS สำหรับเครดิตผู้พัฒนา (อัปเดตใหม่ตามภาพ) --- */
         .developer-credit {
             text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #2a2b36; /* เส้นคั่นบางๆ ด้านบน */
-            color: #8a8b96; /* สีเทาให้ดูไม่แย่งความสนใจจากปุ่ม */
-            font-size: 12px;
-            line-height: 1.6;
+            margin-top: 35px; /* ระยะห่างจากสวิตช์ตัวสุดท้าย */
+            font-size: 13px;
+            line-height: 1.8; /* ระยะห่างระหว่างบรรทัด */
+            color: #8a8b96; /* สีเทาสำหรับชื่อและแผนก */
         }
 
-        .developer-credit i {
-            color: #00ffff;
-            margin-right: 5px;
-        }
-        
-        .developer-name {
-            color: #ffffff;
+        .developer-credit .credit-title {
+            color: #00ffff; /* สีฟ้าสว่างสำหรับคำว่า ผู้พัฒนาระบบ */
             font-weight: bold;
-            margin-top: 5px;
-            display: block;
+            font-size: 15px;
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -199,13 +192,15 @@
             </label>
         </div>
 
-        <!-- ส่วนแสดงเครดิตผู้พัฒนา (เพิ่มใหม่) -->
+        <!-- 👇 ส่วนแสดงเครดิตผู้พัฒนา (เพิ่มชื่อของคุณแล้ว) 👇 -->
         <div class="developer-credit">
-            <i class="fa-solid fa-code"></i> ผู้พัฒนาระบบ
-            <span class="developer-name">นาย ปฐมพร นาดี</span>
-            แผนกอิเล็กทรอนิกส์<br>
-            วิทยาลัยสารพัดช่างศรีสะเกษ
+            <div class="credit-title">ผู้พัฒนาระบบ</div>
+            <div>นาย ปฐมพร นาดี</div>
+            <div>แผนกอิเล็กทรอนิกส์</div>
+            <div>วิทยาลัยสารพัดช่างศรีสะเกษ</div>
         </div>
+        <!-- 👆 สิ้นสุดส่วนเครดิตผู้พัฒนา 👆 -->
+
     </div>
 
     <!-- --- JavaScript สำหรับเชื่อมต่อ Firebase --- -->
@@ -213,7 +208,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // ⚠️ อย่าลืมใส่ Firebase Configuration ของคุณกลับเข้าไปตรงนี้นะครับ ⚠️
+        // ⚠️ อย่าลืมนำค่า Firebase Config ของคุณมาใส่ตรงนี้เหมือนเดิมนะครับ ⚠️
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
