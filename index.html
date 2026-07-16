@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Home IoT Panel</title>
     
-    <!-- นำเข้า FontAwesome สำหรับใช้ไอคอนต่างๆ (หลอดไฟ, ปลั๊ก, ทีวี, แอร์) -->
+    <!-- นำเข้า FontAwesome สำหรับใช้ไอคอนต่างๆ -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -118,6 +118,29 @@
         input:checked + .slider:before {
             transform: translateX(26px);
         }
+
+        /* --- CSS สำหรับเครดิตผู้พัฒนา (เพิ่มใหม่) --- */
+        .developer-credit {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #2a2b36; /* เส้นคั่นบางๆ ด้านบน */
+            color: #8a8b96; /* สีเทาให้ดูไม่แย่งความสนใจจากปุ่ม */
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .developer-credit i {
+            color: #00ffff;
+            margin-right: 5px;
+        }
+        
+        .developer-name {
+            color: #ffffff;
+            font-weight: bold;
+            margin-top: 5px;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -175,16 +198,22 @@
                 <span class="slider"></span>
             </label>
         </div>
+
+        <!-- ส่วนแสดงเครดิตผู้พัฒนา (เพิ่มใหม่) -->
+        <div class="developer-credit">
+            <i class="fa-solid fa-code"></i> ผู้พัฒนาระบบ
+            <span class="developer-name">นาย ปฐมพร นาดี</span>
+            แผนกอิเล็กทรอนิกส์<br>
+            วิทยาลัยสารพัดช่างศรีสะเกษ
+        </div>
     </div>
 
     <!-- --- JavaScript สำหรับเชื่อมต่อ Firebase --- -->
-    <!-- ใช้ Firebase เวอร์ชัน Modular (v10) ผ่าน CDN -->
     <script type="module">
-        // 1. นำเข้าฟังก์ชันที่จำเป็นจาก Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // 2. ⚠️ ใส่ Firebase Configuration ของคุณที่นี่ ⚠️
+        // ⚠️ อย่าลืมใส่ Firebase Configuration ของคุณกลับเข้าไปตรงนี้นะครับ ⚠️
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -195,23 +224,19 @@
             appId: "YOUR_APP_ID"
         };
 
-        // 3. เริ่มต้นการทำงานของ Firebase และ Database
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // 4. สร้างฟังก์ชันเชื่อมโยง UI สวิตช์ กับ Firebase
         function setupChannel(switchId, dbPath) {
             const toggleSwitch = document.getElementById(switchId);
             const dbRef = ref(db, dbPath);
 
-            // เมื่อมีการกดสวิตช์บนเว็บ -> ส่งค่าไปอัปเดตที่ Firebase
             toggleSwitch.addEventListener('change', (event) => {
                 set(dbRef, event.target.checked)
                     .then(() => console.log(`${switchId} ถูกปรับเป็น ${event.target.checked}`))
                     .catch((error) => console.error("เกิดข้อผิดพลาด:", error));
             });
 
-            // เมื่อค่าใน Firebase เปลี่ยนแปลง -> ให้อัปเดตสวิตช์บนเว็บแบบเรียลไทม์
             onValue(dbRef, (snapshot) => {
                 const data = snapshot.val();
                 if (data !== null) {
@@ -220,7 +245,6 @@
             });
         }
 
-        // 5. เรียกใช้ฟังก์ชันสำหรับทั้ง 4 ช่อง (โดยตั้งชื่อ path ในฐานข้อมูลว่า relays/ch1, relays/ch2, ...)
         setupChannel('ch1', 'relays/ch1');
         setupChannel('ch2', 'relays/ch2');
         setupChannel('ch3', 'relays/ch3');
